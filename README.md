@@ -33,6 +33,18 @@ This template intentionally separates concerns:
             └── just-submodules-hub/   # added by bootstrap command
 ```
 
+Repositories added by `just add-repo` are placed under `repo/github.com/<owner>/<repo>`.
+
+For example:
+
+- `just add-repo kitsuyui/my-service`
+- `just add-repo https://github.com/gitignore-in/website`
+
+will create:
+
+- `repo/github.com/kitsuyui/my-service`
+- `repo/github.com/gitignore-in/website`
+
 ## Quick Start
 
 1. Create a new repository from this template.
