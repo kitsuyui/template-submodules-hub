@@ -54,7 +54,7 @@ will create:
 just install-just-submodules-hub
 ```
 
-After bootstrap, shared commands like `add-repo`, `remove-repo`, and `update-all-repo` become available.
+After bootstrap, shared commands like `add-repo`, `remove-repo`, and `sync-all-repo-default-branch` become available.
 
 ## Add Repositories
 
@@ -66,6 +66,26 @@ or
 
 ```sh
 just add-repo https://github.com/<owner>/<repo>
+```
+
+## Synchronization and Parent Commit
+
+- Sync one repository to its default branch:
+
+```sh
+just sync-repo-default-branch <owner>/<repo>
+```
+
+- Sync all repositories to their default branches:
+
+```sh
+just sync-all-repo-default-branch
+```
+
+- Commit only submodule pointer updates in the parent repository:
+
+```sh
+just commit-submodule-pointers
 ```
 
 ## Customization Policy
