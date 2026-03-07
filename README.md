@@ -54,7 +54,7 @@ will create:
 just install-just-submodules-hub
 ```
 
-After bootstrap, shared commands like `add-repo`, `remove-repo`, and `sync-all-repo-default-branch` become available.
+After bootstrap, the template imports `just-submodules-hub/just/index.just`, and shared commands like `add-repo`, `remove-repo`, and `sync-all-repo-default-branch` become available.
 
 ## Add Repositories
 
@@ -93,6 +93,7 @@ just commit-submodule-pointers
 - Keep `.just/bootstrap.just` minimal.
 - Put reusable or complex bootstrap/workflow logic into `just-submodules-hub`.
 - Keep repository-specific behavior in local recipes/hooks only when necessary.
+- Prefer importing `repo/github.com/kitsuyui/just-submodules-hub/just/index.just` as the single shared entrypoint.
 
 ## License Scope
 
