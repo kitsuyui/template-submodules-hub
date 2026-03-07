@@ -1,47 +1,75 @@
 # template-submodules-hub
 
-This repository is a template for building a **submodule hub**.
-It helps you manage many GitHub repositories as Git submodules from one place.
+`template-submodules-hub` is a **template repository** for creating a Git submodule hub.
+Use it when you want to manage multiple repositories from one parent repository with consistent `just` commands.
 
-## What This Template Provides
+## Purpose
 
-- A bootstrap `just` command to install the shared module (`just-submodules-hub`)
-- A `just`-based interface for common submodule operations after bootstrap
-- A simple starting structure for a private or public submodule-management repository
+This template gives you a minimal, practical starting point for submodule-hub repositories:
+
+- bootstrap once
+- use shared submodule operations
+- keep local customization small and explicit
+
+## Concept
+
+This template intentionally separates concerns:
+
+- **`template-submodules-hub`** defines the starting layout and bootstrap entrypoint.
+- **`just-submodules-hub`** provides reusable, shared `just` modules and scripts.
+
+`template-submodules-hub` keeps bootstrap logic minimal. If bootstrap becomes complex, move that complexity into `just-submodules-hub` instead of growing `.just/bootstrap.just`.
+
+## Directory Structure
+
+```text
+.
+├── .just/
+│   └── bootstrap.just
+├── justfile
+└── repo/
+    └── github.com/
+        └── kitsuyui/
+            └── just-submodules-hub/   # added by bootstrap command
+```
+
+Repositories added by `just add-repo` are placed under `repo/github.com/<owner>/<repo>`.
+
+For example:
+
+- `just add-repo kitsuyui/my-service`
+- `just add-repo https://github.com/gitignore-in/website`
+
+will create:
+
+- `repo/github.com/kitsuyui/my-service`
+- `repo/github.com/gitignore-in/website`
 
 ## Quick Start
 
-1. Create a repository from this template.
-2. Run the bootstrap command:
+1. Create a new repository from this template.
+2. Run:
 
 ```sh
 just install-just-submodules-hub
 ```
 
-After this, shared commands (such as `add-repo`, `remove-repo`, and `update-all-repo`) become available via `just`.
+After bootstrap, shared commands like `add-repo`, `remove-repo`, and `update-all-repo` become available.
 
-## Add a Repository
-
-Use one of the following:
-
-```sh
-just add-repo https://github.com/<owner>/<repo>
-```
-
-or
+## Add Repositories
 
 ```sh
 just add-repo <owner>/<repo>
 ```
 
-## Typical Workflow
+or
 
-- Add a repository: `just add-repo <owner>/<repo>`
-- Update one repository: `just update-repo repo/github.com/<owner>/<repo>`
-- Update all repositories: `just update-all-repo`
-- Run a command in every repository: `just every-repo '<command>'`
+```sh
+just add-repo https://github.com/<owner>/<repo>
+```
 
-## Notes
+## Customization Policy
 
-- The shared module is referenced at `repo/github.com/kitsuyui/just-submodules-hub`.
-- If you need custom behavior, you can add your own local recipes and hooks in this repository.
+- Keep `.just/bootstrap.just` minimal.
+- Put reusable or complex bootstrap/workflow logic into `just-submodules-hub`.
+- Keep repository-specific behavior in local recipes/hooks only when necessary.
