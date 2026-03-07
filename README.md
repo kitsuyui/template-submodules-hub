@@ -11,6 +11,16 @@ This template gives you a minimal, practical starting point for submodule-hub re
 - use shared submodule operations
 - keep local customization small and explicit
 
+## Requirements
+
+This template expects [`just`](https://github.com/casey/just) to be installed before bootstrap.
+
+On macOS, install it with Homebrew:
+
+```sh
+brew install just
+```
+
 ## Concept
 
 This template intentionally separates concerns:
