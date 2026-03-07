@@ -73,3 +73,12 @@ just add-repo https://github.com/<owner>/<repo>
 - Keep `.just/bootstrap.just` minimal.
 - Put reusable or complex bootstrap/workflow logic into `just-submodules-hub`.
 - Keep repository-specific behavior in local recipes/hooks only when necessary.
+
+## License Scope
+
+This template repository is dedicated to the public domain under CC0-1.0.
+
+Important scope notes:
+
+- Managed submodules are independent projects. Each submodule is governed by its own license.
+- External tools used with this repository (for example, `just`, `git`, and `gh`) are governed by their respective licenses.
