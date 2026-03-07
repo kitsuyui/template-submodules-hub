@@ -7,4 +7,4 @@ default:
   @just --choose
 
 import ".just/bootstrap.just"
-import? "repo/github.com/kitsuyui/just-submodules-hub/just/repo.just"
+import? "repo/github.com/kitsuyui/just-submodules-hub/just/index.just"
