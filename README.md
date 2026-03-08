@@ -1,7 +1,7 @@
 # template-submodules-hub
 
 `template-submodules-hub` is a **template repository** for creating a Git submodule hub.
-Use it when you want to manage multiple repositories from one parent repository with consistent `just` commands.
+Use it when you want to manage multiple repositories from one parent repository with a shared `just` entrypoint.
 
 ## Purpose
 
@@ -43,17 +43,7 @@ This template intentionally separates concerns:
             └── just-submodules-hub/   # added by bootstrap command
 ```
 
-Repositories added by `just repo submodule add` are placed under `repo/github.com/<owner>/<repo>`.
-
-For example:
-
-- `just repo submodule add kitsuyui/my-service`
-- `just repo submodule add https://github.com/gitignore-in/website`
-
-will create:
-
-- `repo/github.com/kitsuyui/my-service`
-- `repo/github.com/gitignore-in/website`
+Managed repositories are placed under `repo/github.com/<owner>/<repo>`.
 
 ## Quick Start
 
@@ -64,39 +54,30 @@ will create:
 just install-just-submodules-hub
 ```
 
-After bootstrap, the template imports `just-submodules-hub/just/index.just`, and shared commands like `repo submodule add`, `repo submodule remove`, and `repo submodule sync-all-default-branch` become available.
+After bootstrap, the template imports `just-submodules-hub/just/index.just`.
 
-## Add Repositories
+From that point on, operational command reference lives in `just-submodules-hub`, not in this template repository.
+
+## What You Get After Bootstrap
+
+```sh
+import? "repo/github.com/kitsuyui/just-submodules-hub/just/index.just"
+```
+
+Typical usage then looks like:
 
 ```sh
 just repo submodule add <owner>/<repo>
+just github repos list
+just github prs summary
 ```
 
-or
+Detailed command guides:
 
-```sh
-just repo submodule add https://github.com/<owner>/<repo>
-```
-
-## Synchronization and Parent Commit
-
-- Sync one repository to its default branch:
-
-```sh
-just repo submodule sync-default-branch <owner>/<repo>
-```
-
-- Sync all repositories to their default branches:
-
-```sh
-just repo submodule sync-all-default-branch
-```
-
-- Commit only submodule pointer updates in the parent repository:
-
-```sh
-just repo submodule commit-pointers
-```
+- [`just-submodules-hub` README](https://github.com/kitsuyui/just-submodules-hub)
+- [`just-submodules-hub` docs](https://github.com/kitsuyui/just-submodules-hub/tree/main/docs)
+- [`just-submodules-hub` repo docs](https://github.com/kitsuyui/just-submodules-hub/tree/main/docs/repo)
+- [`just-submodules-hub` GitHub docs](https://github.com/kitsuyui/just-submodules-hub/tree/main/docs/github)
 
 ## Customization Policy
 
@@ -104,6 +85,7 @@ just repo submodule commit-pointers
 - Put reusable or complex bootstrap/workflow logic into `just-submodules-hub`.
 - Keep repository-specific behavior in local recipes/hooks only when necessary.
 - Prefer importing `repo/github.com/kitsuyui/just-submodules-hub/just/index.just` as the single shared entrypoint.
+- Keep this README focused on template setup, not ongoing operational command reference.
 
 ## License Scope
 
