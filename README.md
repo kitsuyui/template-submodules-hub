@@ -43,12 +43,12 @@ This template intentionally separates concerns:
             └── just-submodules-hub/   # added by bootstrap command
 ```
 
-Repositories added by `just add-repo` are placed under `repo/github.com/<owner>/<repo>`.
+Repositories added by `just repo submodule add` are placed under `repo/github.com/<owner>/<repo>`.
 
 For example:
 
-- `just add-repo kitsuyui/my-service`
-- `just add-repo https://github.com/gitignore-in/website`
+- `just repo submodule add kitsuyui/my-service`
+- `just repo submodule add https://github.com/gitignore-in/website`
 
 will create:
 
@@ -64,18 +64,18 @@ will create:
 just install-just-submodules-hub
 ```
 
-After bootstrap, the template imports `just-submodules-hub/just/index.just`, and shared commands like `add-repo`, `remove-repo`, and `sync-all-repo-default-branch` become available.
+After bootstrap, the template imports `just-submodules-hub/just/index.just`, and shared commands like `repo submodule add`, `repo submodule remove`, and `repo submodule sync-all-default-branch` become available.
 
 ## Add Repositories
 
 ```sh
-just add-repo <owner>/<repo>
+just repo submodule add <owner>/<repo>
 ```
 
 or
 
 ```sh
-just add-repo https://github.com/<owner>/<repo>
+just repo submodule add https://github.com/<owner>/<repo>
 ```
 
 ## Synchronization and Parent Commit
@@ -83,19 +83,19 @@ just add-repo https://github.com/<owner>/<repo>
 - Sync one repository to its default branch:
 
 ```sh
-just sync-repo-default-branch <owner>/<repo>
+just repo submodule sync-default-branch <owner>/<repo>
 ```
 
 - Sync all repositories to their default branches:
 
 ```sh
-just sync-all-repo-default-branch
+just repo submodule sync-all-default-branch
 ```
 
 - Commit only submodule pointer updates in the parent repository:
 
 ```sh
-just commit-submodule-pointers
+just repo submodule commit-pointers
 ```
 
 ## Customization Policy
