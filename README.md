@@ -1,36 +1,37 @@
 # template-submodules-hub
 
-`template-submodules-hub` is a **template repository** for creating a Git submodule hub.
-Use it when you want to manage multiple repositories from one parent repository with a shared `just` entrypoint.
+`template-submodules-hub` is a template for creating a Git submodule hub with a shared `just` command surface.
 
-## Purpose
+Use this template when one parent repository should coordinate many independent repositories under `repo/github.com/<owner>/<repo>`.
 
-This template gives you a minimal, practical starting point for submodule-hub repositories:
+## Quick Start
 
-- bootstrap once
-- use shared submodule operations
-- keep local customization small and explicit
+Create a repository from this template, then run:
+
+```sh
+just setup
+```
+
+`setup` performs two steps:
+
+1. `bootstrap-shared-commands`: add or initialize `repo/github.com/kitsuyui/just-submodules-hub`
+2. `repo::submodule::init-all`: initialize registered submodules through the shared command module
+
+This keeps first-run setup working even though the shared recipes are not available until after bootstrap.
 
 ## Requirements
 
-This template expects [`just`](https://github.com/casey/just) to be installed before bootstrap.
+This template expects [`just`](https://github.com/casey/just) to be installed before setup.
 
-On macOS, install it with Homebrew:
+On macOS:
 
 ```sh
 brew install just
 ```
 
-## Concept
+After bootstrap, the shared command module may also require `git`, `uv`, and `gh` depending on which recipes you run.
 
-This template intentionally separates concerns:
-
-- **`template-submodules-hub`** defines the starting layout and bootstrap entrypoint.
-- **`just-submodules-hub`** provides reusable, shared `just` modules and scripts.
-
-`template-submodules-hub` keeps bootstrap logic minimal. If bootstrap becomes complex, move that complexity into `just-submodules-hub` instead of growing `.just/bootstrap.just`.
-
-## Directory Structure
+## Repository Layout
 
 ```text
 .
@@ -40,56 +41,56 @@ This template intentionally separates concerns:
 └── repo/
     └── github.com/
         └── kitsuyui/
-            └── just-submodules-hub/   # added by bootstrap command
+            └── just-submodules-hub/   # added by bootstrap-shared-commands
 ```
 
 Managed repositories are placed under `repo/github.com/<owner>/<repo>`.
 
-## Quick Start
+## Command Model
 
-1. Create a new repository from this template.
-2. Run:
+The root `justfile` imports:
 
-```sh
-just setup
-```
-
-`setup` first bootstraps the shared command module, then starts a new `just` process to run `repo::submodule::init-all` from that module.
-This keeps first-run setup working even though the shared recipes are not available until after bootstrap.
-
-After setup, the template imports `just-submodules-hub/just/index.just`.
-The bootstrap command records `just-submodules-hub` with `shallow = true` in `.gitmodules`, so later clones can initialize the shared command module with Git's recommended shallow behavior.
-
-From that point on, operational command reference lives in `just-submodules-hub`, not in this template repository.
-
-## What You Get After Bootstrap
-
-```sh
+```just
+import ".just/bootstrap.just"
 import? "repo/github.com/kitsuyui/just-submodules-hub/just/index.just"
 ```
 
-Typical usage then looks like:
+Before bootstrap, only local setup commands are available:
+
+- `just setup`
+- `just bootstrap-shared-commands`
+
+After bootstrap, operational commands come from `just-submodules-hub`.
+Canonical command names follow a namespace/resource/verb tree, for example:
 
 ```sh
-just repo submodule add <owner>/<repo>
-just github repos list
-just github prs summary
+just repo::submodule::add <owner>/<repo>
+just repo::submodule::default-branch::sync-all
+just repo::submodule::managed::list
+just github::repos::list
+just github::prs::summary
 ```
 
-Detailed command guides:
+Detailed references:
 
 - [`just-submodules-hub` README](https://github.com/kitsuyui/just-submodules-hub)
 - [`just-submodules-hub` docs](https://github.com/kitsuyui/just-submodules-hub/tree/main/docs)
+- [`just-submodules-hub` command naming](https://github.com/kitsuyui/just-submodules-hub/blob/main/docs/command-naming.md)
 - [`just-submodules-hub` repo docs](https://github.com/kitsuyui/just-submodules-hub/tree/main/docs/repo)
 - [`just-submodules-hub` GitHub docs](https://github.com/kitsuyui/just-submodules-hub/tree/main/docs/github)
 
+## Shallow Bootstrap
+
+`bootstrap-shared-commands` records `just-submodules-hub` with `shallow = true` in `.gitmodules`.
+Later clones can then use Git's recommended shallow behavior during setup.
+
 ## Customization Policy
 
-- Keep `.just/bootstrap.just` minimal.
+- Keep `.just/bootstrap.just` focused on first-run bootstrap only.
 - Put reusable or complex bootstrap/workflow logic into `just-submodules-hub`.
 - Keep repository-specific behavior in local recipes/hooks only when necessary.
 - Prefer importing `repo/github.com/kitsuyui/just-submodules-hub/just/index.just` as the single shared entrypoint.
-- Keep this README focused on template setup, not ongoing operational command reference.
+- Keep this README focused on template setup. Ongoing operational command reference belongs in `just-submodules-hub`.
 
 ## License Scope
 
