@@ -55,6 +55,7 @@ just install-just-submodules-hub
 ```
 
 After bootstrap, the template imports `just-submodules-hub/just/index.just`.
+The bootstrap command records `just-submodules-hub` with `shallow = true` in `.gitmodules`, so later clones can initialize the shared command module with Git's recommended shallow behavior.
 
 From that point on, operational command reference lives in `just-submodules-hub`, not in this template repository.
 
