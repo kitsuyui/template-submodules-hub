@@ -33,9 +33,3 @@ bootstrap-shared-commands:
 
   git submodule add -- "$url" "$target"
   git config -f .gitmodules "submodule.${target}.shallow" true
-
-# Deprecated alias for bootstrap-shared-commands.
-install-just-submodules-hub:
-  #!/bin/sh
-  set -eu
-  just bootstrap-shared-commands
