@@ -51,10 +51,13 @@ Managed repositories are placed under `repo/github.com/<owner>/<repo>`.
 2. Run:
 
 ```sh
-just install-just-submodules-hub
+just setup
 ```
 
-After bootstrap, the template imports `just-submodules-hub/just/index.just`.
+`setup` first bootstraps the shared command module, then starts a new `just` process to run `repo::submodule::init-all` from that module.
+This keeps first-run setup working even though the shared recipes are not available until after bootstrap.
+
+After setup, the template imports `just-submodules-hub/just/index.just`.
 The bootstrap command records `just-submodules-hub` with `shallow = true` in `.gitmodules`, so later clones can initialize the shared command module with Git's recommended shallow behavior.
 
 From that point on, operational command reference lives in `just-submodules-hub`, not in this template repository.
