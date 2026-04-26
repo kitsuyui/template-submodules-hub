@@ -15,6 +15,7 @@ bootstrap-shared-commands:
   if git config -f .gitmodules --get "submodule.${target}.path" >/dev/null 2>&1; then
     git config -f .gitmodules "submodule.${target}.shallow" true
     git submodule update --init --recommend-shallow -- "$target"
+    git config --local "submodule.${target}.ignore" all
     exit 0
   fi
 
@@ -33,3 +34,4 @@ bootstrap-shared-commands:
 
   git submodule add -- "$url" "$target"
   git config -f .gitmodules "submodule.${target}.shallow" true
+  git config --local "submodule.${target}.ignore" all
