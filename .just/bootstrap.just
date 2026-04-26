@@ -1,5 +1,12 @@
-# Bootstrap: install the shared just module repository
-install-just-submodules-hub:
+# Set up the shared just module and initialize registered submodules.
+setup:
+  #!/bin/sh
+  set -eu
+  just bootstrap-shared-commands
+  just repo::submodule::init-all
+
+# Bootstrap the shared just module repository.
+bootstrap-shared-commands:
   #!/bin/sh
   set -eu
   target="repo/github.com/kitsuyui/just-submodules-hub"
@@ -26,3 +33,9 @@ install-just-submodules-hub:
 
   git submodule add -- "$url" "$target"
   git config -f .gitmodules "submodule.${target}.shallow" true
+
+# Deprecated alias for bootstrap-shared-commands.
+install-just-submodules-hub:
+  #!/bin/sh
+  set -eu
+  just bootstrap-shared-commands
