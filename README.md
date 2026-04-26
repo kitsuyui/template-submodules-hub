@@ -18,6 +18,7 @@ just setup
 2. `repo::submodule::init-all`: initialize registered submodules through the shared command module
 
 This keeps first-run setup working even though the shared recipes are not available until after bootstrap.
+Bootstrap and shared submodule setup default managed submodules to `ignore=all` in the local `.git/config`, so parent repository status stays focused on intentional hub-level changes.
 
 ## Requirements
 
@@ -81,7 +82,7 @@ Detailed references:
 
 ## Shallow Bootstrap
 
-`bootstrap-shared-commands` records `just-submodules-hub` with `shallow = true` in `.gitmodules`.
+`bootstrap-shared-commands` records `just-submodules-hub` with `shallow = true` in `.gitmodules` and sets its local parent-status visibility to hidden.
 Later clones can then use Git's recommended shallow behavior during setup.
 
 ## Customization Policy
