@@ -69,7 +69,7 @@ just repo::submodule::add <owner>/<repo>
 just repo::submodule::default-branch::sync-all
 just repo::submodule::managed::list
 just github::repos::list
-just github::prs::summary
+just github::prs::summaries::show
 ```
 
 Detailed references:
