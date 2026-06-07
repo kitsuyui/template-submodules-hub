@@ -22,7 +22,7 @@ bootstrap-shared-commands:
   #!/bin/sh
   set -eu
   target="repo/github.com/kitsuyui/just-submodules-hub"
-  url="git@github.com:kitsuyui/just-submodules-hub.git"
+  url="https://github.com/kitsuyui/just-submodules-hub.git"
 
   if git config -f .gitmodules --get "submodule.${target}.path" >/dev/null 2>&1; then
     git config -f .gitmodules "submodule.${target}.shallow" true
