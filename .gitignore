@@ -1,0 +1,13 @@
+# Environment variables (loaded by justfile via set dotenv-load)
+.env
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
