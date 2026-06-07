@@ -95,6 +95,19 @@ Detailed references:
 `shallow = true` in `.gitmodules`, and local parent-status visibility set to hidden.
 Later clones can then use Git's recommended shallow behavior during setup.
 
+## Template Variables
+
+The `justfile` exposes two customization variables. Change them after forking to match your setup.
+
+| Variable | Default | Purpose |
+| --- | --- | --- |
+| `default_owners` | `kitsuyui` | GitHub owner(s) used by hub-wide commands |
+| `default_visibility` | `all` | Repository visibility filter |
+
+**Character constraints.** These variables are passed to shell recipes via `just`'s `{{ variable }}` interpolation, which performs plain string substitution without shell quoting. Use only alphanumeric characters, hyphens (`-`), and commas (`,`) in `default_owners`. Safe values for `default_visibility` are `all`, `public`, and `private`. Shell metacharacters such as `;`, `|`, backticks, `$()`, `&`, `<`, and `>` must not appear in these values, as they would be evaluated by the shell and cause unexpected behavior.
+
+`set dotenv-load` is active, so a `.env` file at the repository root can also override these variables. Apply the same character constraint to any values set there.
+
 ## Customization Policy
 
 - Keep `.just/bootstrap.just` focused on first-run bootstrap only.
