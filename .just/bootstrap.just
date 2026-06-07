@@ -35,3 +35,5 @@ bootstrap-shared-commands:
   git submodule add -- "$url" "$target"
   git config -f .gitmodules "submodule.${target}.shallow" true
   git config --local "submodule.${target}.ignore" all
+  git add .gitmodules "$target"
+  git commit -m "bootstrap: register just-submodules-hub submodule"
