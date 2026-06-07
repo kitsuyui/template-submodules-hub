@@ -52,3 +52,5 @@ bootstrap-shared-commands:
   trap - EXIT INT TERM
   git config -f .gitmodules "submodule.${target}.shallow" true
   git config --local "submodule.${target}.ignore" all
+  git add .gitmodules "$target"
+  git commit -m "bootstrap: register just-submodules-hub submodule"

@@ -14,7 +14,7 @@ just setup
 
 `setup` performs two steps:
 
-1. `bootstrap-shared-commands`: add or initialize `repo/github.com/kitsuyui/just-submodules-hub`
+1. `bootstrap-shared-commands`: add or initialize `repo/github.com/kitsuyui/just-submodules-hub`, committing the submodule registration when it is newly added
 2. `repo::submodule::init-all`: initialize registered submodules through the shared command module
 
 This keeps first-run setup working even though the shared recipes are not available until after bootstrap.
