@@ -72,6 +72,12 @@ just github::repos::list
 just github::prs::summaries::show
 ```
 
+The root `justfile` also enables `set dotenv-load`. When a `.env` file exists at the
+repository root, `just` loads it before running any recipe. Values in that file can
+override just variables such as `default_owners` and `default_visibility`, and they also
+become part of the environment visible to recipes. Keep `.env` local unless the whole
+team intentionally wants the same recipe defaults.
+
 Detailed references:
 
 - [`just-submodules-hub` README](https://github.com/kitsuyui/just-submodules-hub)
