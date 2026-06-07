@@ -32,6 +32,11 @@ bootstrap-shared-commands:
     rm -rf ".git/modules/$target"
   fi
 
+  __bootstrap_cleanup() {
+    rm -rf ".git/modules/$target" "$target"
+  }
+  trap __bootstrap_cleanup EXIT INT TERM
   git submodule add -- "$url" "$target"
+  trap - EXIT INT TERM
   git config -f .gitmodules "submodule.${target}.shallow" true
   git config --local "submodule.${target}.ignore" all
