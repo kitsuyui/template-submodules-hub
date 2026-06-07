@@ -22,7 +22,8 @@ Bootstrap and shared submodule setup default managed submodules to `ignore=all` 
 
 ## Requirements
 
-This template expects [`just`](https://github.com/casey/just) to be installed before setup.
+This template expects [`just`](https://github.com/casey/just) **>= 1.12.0** to be installed before setup.
+The `import?` syntax used in `justfile` (optional import) requires just 1.12.0 or later.
 
 On macOS:
 
