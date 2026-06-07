@@ -30,6 +30,9 @@ On macOS:
 brew install just
 ```
 
+The bootstrap step clones the public shared command module over HTTPS, so first-run setup does
+not require an SSH key or a pre-populated `known_hosts` entry.
+
 After bootstrap, the shared command module may also require `git`, `uv`, and `gh` depending on which recipes you run.
 
 ## Repository Layout
@@ -82,7 +85,8 @@ Detailed references:
 
 ## Shallow Bootstrap
 
-`bootstrap-shared-commands` records `just-submodules-hub` with `shallow = true` in `.gitmodules` and sets its local parent-status visibility to hidden.
+`bootstrap-shared-commands` records `just-submodules-hub` with an unauthenticated HTTPS URL,
+`shallow = true` in `.gitmodules`, and local parent-status visibility set to hidden.
 Later clones can then use Git's recommended shallow behavior during setup.
 
 ## Customization Policy
