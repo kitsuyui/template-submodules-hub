@@ -13,6 +13,11 @@ bootstrap-shared-commands:
   url="git@github.com:kitsuyui/just-submodules-hub.git"
 
   if git config -f .gitmodules --get "submodule.${target}.path" >/dev/null 2>&1; then
+    actual_url=$(git config -f .gitmodules --get "submodule.${target}.url" 2>/dev/null || echo "")
+    if [ "$actual_url" != "$url" ]; then
+      echo "error: submodule '${target}' is registered with URL '${actual_url}', expected '${url}'" >&2
+      exit 1
+    fi
     git config -f .gitmodules "submodule.${target}.shallow" true
     git submodule update --init --recommend-shallow -- "$target"
     git config --local "submodule.${target}.ignore" all
