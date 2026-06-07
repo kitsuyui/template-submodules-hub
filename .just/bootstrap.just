@@ -1,3 +1,15 @@
+# Show bootstrap phase and available recipes.
+status:
+  #!/bin/sh
+  if [ -f "repo/github.com/kitsuyui/just-submodules-hub/just/index.just" ]; then
+    echo "phase: post-bootstrap"
+    echo "just-submodules-hub is available. All hub recipes are active."
+  else
+    echo "phase: pre-bootstrap"
+    echo "just-submodules-hub is not yet initialized."
+    echo "Run 'just setup' to enable hub recipes."
+  fi
+
 # Set up the shared just module and initialize registered submodules.
 setup:
   #!/bin/sh
