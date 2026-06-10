@@ -14,7 +14,7 @@ just setup
 
 `setup` performs two steps:
 
-1. `bootstrap-shared-commands`: add or initialize `repo/github.com/kitsuyui/just-submodules-hub`
+1. `bootstrap-shared-commands`: add or initialize `repo/github.com/kitsuyui/just-submodules-hub`, committing the submodule registration when it is newly added
 2. `repo::submodule::init-all`: initialize registered submodules through the shared command module
 
 This keeps first-run setup working even though the shared recipes are not available until after bootstrap.
@@ -22,13 +22,17 @@ Bootstrap and shared submodule setup default managed submodules to `ignore=all` 
 
 ## Requirements
 
-This template expects [`just`](https://github.com/casey/just) to be installed before setup.
+This template expects [`just`](https://github.com/casey/just) **>= 1.12.0** to be installed before setup.
+The `import?` syntax used in `justfile` (optional import) requires just 1.12.0 or later.
 
 On macOS:
 
 ```sh
 brew install just
 ```
+
+The bootstrap step clones the public shared command module over HTTPS, so first-run setup does
+not require an SSH key or a pre-populated `known_hosts` entry.
 
 After bootstrap, the shared command module may also require `git`, `uv`, and `gh` depending on which recipes you run.
 
@@ -72,6 +76,12 @@ just github::repos::list
 just github::prs::summaries::show
 ```
 
+The root `justfile` also enables `set dotenv-load`. When a `.env` file exists at the
+repository root, `just` loads it before running any recipe. Values in that file can
+override just variables such as `default_owners` and `default_visibility`, and they also
+become part of the environment visible to recipes. Keep `.env` local unless the whole
+team intentionally wants the same recipe defaults.
+
 Detailed references:
 
 - [`just-submodules-hub` README](https://github.com/kitsuyui/just-submodules-hub)
@@ -82,8 +92,22 @@ Detailed references:
 
 ## Shallow Bootstrap
 
-`bootstrap-shared-commands` records `just-submodules-hub` with `shallow = true` in `.gitmodules` and sets its local parent-status visibility to hidden.
+`bootstrap-shared-commands` records `just-submodules-hub` with an unauthenticated HTTPS URL,
+`shallow = true` in `.gitmodules`, and local parent-status visibility set to hidden.
 Later clones can then use Git's recommended shallow behavior during setup.
+
+## Template Variables
+
+The `justfile` exposes two customization variables. Change them after forking to match your setup.
+
+| Variable | Default | Purpose |
+| --- | --- | --- |
+| `default_owners` | `kitsuyui` | GitHub owner(s) used by hub-wide commands |
+| `default_visibility` | `all` | Repository visibility filter |
+
+**Character constraints.** These variables are passed to shell recipes via `just`'s `{{ variable }}` interpolation, which performs plain string substitution without shell quoting. Use only alphanumeric characters, hyphens (`-`), and commas (`,`) in `default_owners`. Safe values for `default_visibility` are `all`, `public`, and `private`. Shell metacharacters such as `;`, `|`, backticks, `$()`, `&`, `<`, and `>` must not appear in these values, as they would be evaluated by the shell and cause unexpected behavior.
+
+`set dotenv-load` is active, so a `.env` file at the repository root can also override these variables. Apply the same character constraint to any values set there.
 
 ## Customization Policy
 

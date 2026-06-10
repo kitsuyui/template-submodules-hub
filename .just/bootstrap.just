@@ -1,3 +1,15 @@
+# Show bootstrap phase and available recipes.
+status:
+  #!/bin/sh
+  if [ -f "repo/github.com/kitsuyui/just-submodules-hub/just/index.just" ]; then
+    echo "phase: post-bootstrap"
+    echo "just-submodules-hub is available. All hub recipes are active."
+  else
+    echo "phase: pre-bootstrap"
+    echo "just-submodules-hub is not yet initialized."
+    echo "Run 'just setup' to enable hub recipes."
+  fi
+
 # Set up the shared just module and initialize registered submodules.
 setup:
   #!/bin/sh
@@ -10,10 +22,19 @@ bootstrap-shared-commands:
   #!/bin/sh
   set -eu
   target="repo/github.com/kitsuyui/just-submodules-hub"
-  url="git@github.com:kitsuyui/just-submodules-hub.git"
+  url="https://github.com/kitsuyui/just-submodules-hub.git"
 
   if git config -f .gitmodules --get "submodule.${target}.path" >/dev/null 2>&1; then
+    actual_url=$(git config -f .gitmodules --get "submodule.${target}.url" 2>/dev/null || echo "")
+    if [ "$actual_url" != "$url" ]; then
+      echo "error: submodule '${target}' is registered with URL '${actual_url}', expected '${url}'" >&2
+      exit 1
+    fi
     git config -f .gitmodules "submodule.${target}.shallow" true
+    if [ -z "$(git ls-tree HEAD "$target" 2>/dev/null)" ]; then
+      git add .gitmodules "$target"
+      git commit -m "bootstrap: register just-submodules-hub submodule"
+    fi
     git submodule update --init --recommend-shallow -- "$target"
     git config --local "submodule.${target}.ignore" all
     exit 0
@@ -32,6 +53,13 @@ bootstrap-shared-commands:
     rm -rf ".git/modules/$target"
   fi
 
+  __bootstrap_cleanup() {
+    rm -rf ".git/modules/$target" "$target"
+  }
+  trap __bootstrap_cleanup EXIT INT TERM
   git submodule add -- "$url" "$target"
+  trap - EXIT INT TERM
   git config -f .gitmodules "submodule.${target}.shallow" true
   git config --local "submodule.${target}.ignore" all
+  git add .gitmodules "$target"
+  git commit -m "bootstrap: register just-submodules-hub submodule"
