@@ -31,6 +31,10 @@ bootstrap-shared-commands:
       exit 1
     fi
     git config -f .gitmodules "submodule.${target}.shallow" true
+    if [ -z "$(git ls-tree HEAD "$target" 2>/dev/null)" ]; then
+      git add .gitmodules "$target"
+      git commit -m "bootstrap: register just-submodules-hub submodule"
+    fi
     git submodule update --init --recommend-shallow -- "$target"
     git config --local "submodule.${target}.ignore" all
     exit 0
