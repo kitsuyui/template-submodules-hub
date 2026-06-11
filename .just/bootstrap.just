@@ -35,7 +35,7 @@ bootstrap-shared-commands:
       git add .gitmodules "$target"
       git commit -m "bootstrap: register just-submodules-hub submodule"
     fi
-    git submodule update --init --recommend-shallow -- "$target"
+    timeout 120 git submodule update --init --recommend-shallow -- "$target"
     git config --local "submodule.${target}.ignore" all
     exit 0
   fi
@@ -57,7 +57,7 @@ bootstrap-shared-commands:
     rm -rf ".git/modules/$target" "$target"
   }
   trap __bootstrap_cleanup EXIT INT TERM
-  git submodule add -- "$url" "$target"
+  timeout 120 git submodule add -- "$url" "$target"
   trap - EXIT INT TERM
   git config -f .gitmodules "submodule.${target}.shallow" true
   git config --local "submodule.${target}.ignore" all
