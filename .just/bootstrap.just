@@ -23,6 +23,44 @@ bootstrap-shared-commands:
   set -eu
   target="repo/github.com/kitsuyui/just-submodules-hub"
   url="https://github.com/kitsuyui/just-submodules-hub.git"
+  lock_dir=$(git rev-parse --git-path bootstrap-shared-commands.lock)
+  lock_acquired=0
+  cleanup_target=0
+
+  __bootstrap_cleanup() {
+    if [ "$cleanup_target" -eq 1 ]; then
+      rm -rf ".git/modules/$target" "$target"
+    fi
+    if [ "$lock_acquired" -eq 1 ]; then
+      rmdir "$lock_dir" 2>/dev/null || true
+      lock_acquired=0
+    fi
+  }
+
+  __bootstrap_abort_int() {
+    __bootstrap_cleanup
+    exit 130
+  }
+
+  __bootstrap_abort_term() {
+    __bootstrap_cleanup
+    exit 143
+  }
+
+  trap __bootstrap_cleanup EXIT
+  trap __bootstrap_abort_int INT
+  trap __bootstrap_abort_term TERM
+
+  lock_wait_seconds=120
+  until mkdir "$lock_dir" 2>/dev/null; do
+    if [ "$lock_wait_seconds" -le 0 ]; then
+      echo "error: timed out waiting for bootstrap lock: $lock_dir" >&2
+      exit 1
+    fi
+    sleep 1
+    lock_wait_seconds=$((lock_wait_seconds - 1))
+  done
+  lock_acquired=1
 
   if git config -f .gitmodules --get "submodule.${target}.path" >/dev/null 2>&1; then
     actual_url=$(git config -f .gitmodules --get "submodule.${target}.url" 2>/dev/null || echo "")
@@ -53,12 +91,9 @@ bootstrap-shared-commands:
     rm -rf ".git/modules/$target"
   fi
 
-  __bootstrap_cleanup() {
-    rm -rf ".git/modules/$target" "$target"
-  }
-  trap __bootstrap_cleanup EXIT INT TERM
+  cleanup_target=1
   timeout 120 git submodule add -- "$url" "$target"
-  trap - EXIT INT TERM
+  cleanup_target=0
   git config -f .gitmodules "submodule.${target}.shallow" true
   git config --local "submodule.${target}.ignore" all
   git add .gitmodules "$target"
