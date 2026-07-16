@@ -22,14 +22,17 @@ Bootstrap and shared submodule setup default managed submodules to `ignore=all` 
 
 ## Requirements
 
-This template expects [`just`](https://github.com/casey/just) **>= 1.12.0** to be installed before setup.
+This template expects [`just`](https://github.com/casey/just) **>= 1.12.0** and `git` to be installed before setup.
 The `import?` syntax used in `justfile` (optional import) requires just 1.12.0 or later.
+The bootstrap recipe also uses a GNU-style timeout command and accepts either `timeout` or `gtimeout` in `PATH`.
 
 On macOS:
 
 ```sh
-brew install just
+brew install just coreutils
 ```
+
+Homebrew installs the GNU timeout binary as `gtimeout`, which this template accepts during bootstrap.
 
 The bootstrap step clones the public shared command module over HTTPS, so first-run setup does
 not require an SSH key or a pre-populated `known_hosts` entry.
