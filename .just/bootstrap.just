@@ -23,6 +23,15 @@ bootstrap-shared-commands:
   set -eu
   target="repo/github.com/kitsuyui/just-submodules-hub"
   url="https://github.com/kitsuyui/just-submodules-hub.git"
+  if command -v timeout >/dev/null 2>&1; then
+    timeout_cmd="timeout"
+  elif command -v gtimeout >/dev/null 2>&1; then
+    timeout_cmd="gtimeout"
+  else
+    echo "error: bootstrap-shared-commands requires 'timeout' or 'gtimeout' in PATH" >&2
+    echo "hint: install GNU coreutils (for example: 'brew install coreutils' on macOS)" >&2
+    exit 1
+  fi
   lock_dir=$(git rev-parse --git-path bootstrap-shared-commands.lock)
   lock_acquired=0
   cleanup_target=0
@@ -73,7 +82,7 @@ bootstrap-shared-commands:
       git add .gitmodules "$target"
       git commit -m "bootstrap: register just-submodules-hub submodule"
     fi
-    timeout 120 git submodule update --init --recommend-shallow -- "$target"
+    "$timeout_cmd" 120 git submodule update --init --recommend-shallow -- "$target"
     git config --local "submodule.${target}.ignore" all
     exit 0
   fi
@@ -92,7 +101,7 @@ bootstrap-shared-commands:
   fi
 
   cleanup_target=1
-  timeout 120 git submodule add -- "$url" "$target"
+  "$timeout_cmd" 120 git submodule add -- "$url" "$target"
   cleanup_target=0
   git config -f .gitmodules "submodule.${target}.shallow" true
   git config --local "submodule.${target}.ignore" all
