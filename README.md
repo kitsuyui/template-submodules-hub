@@ -98,18 +98,17 @@ Later clones can then use Git's recommended shallow behavior during setup.
 
 ## Dependabot For Submodules
 
-This template does not commit a `.gitmodules` file on `main`.
-The shared command submodule is added later by `just setup`, and managed repositories are added
-only after you choose them for the new hub.
+This template keeps an empty tracked `.gitmodules` file on `main`.
+That gives `gitsubmodule` Dependabot updates a committed manifest to inspect before the repository
+has any registered submodules of its own.
 
-Because `gitsubmodule` Dependabot updates require a committed submodule manifest to scan, this
-template does not ship an active `.github/dependabot.yml` by default.
+The file starts without submodule entries. `just setup` still adds the shared command submodule on
+first bootstrap, and additional managed repositories are committed later as you choose them for the
+new hub.
 
-If you want automated submodule update pull requests in a repository created from this template:
-
-1. Commit the submodule entries that should be tracked in `.gitmodules`.
-2. Add a repository-local `.github/dependabot.yml` after that manifest exists.
-3. Point the `gitsubmodule` update entry at the root directory (`"/"`).
+The default `.github/dependabot.yml` therefore stays valid from the first revision, and it starts
+opening submodule update pull requests as soon as the repository tracks real submodule entries in
+`.gitmodules`.
 
 ## Template Variables
 

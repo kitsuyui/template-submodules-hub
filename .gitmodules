@@ -1,0 +1,2 @@
+# This manifest starts empty on purpose.
+# `just setup` records the shared command submodule on first bootstrap.
