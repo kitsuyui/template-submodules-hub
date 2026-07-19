@@ -99,6 +99,20 @@ Detailed references:
 `shallow = true` in `.gitmodules`, and local parent-status visibility set to hidden.
 Later clones can then use Git's recommended shallow behavior during setup.
 
+## Dependabot For Submodules
+
+This template keeps an empty tracked `.gitmodules` file on `main`.
+That gives `gitsubmodule` Dependabot updates a committed manifest to inspect before the repository
+has any registered submodules of its own.
+
+The file starts without submodule entries. `just setup` still adds the shared command submodule on
+first bootstrap, and additional managed repositories are committed later as you choose them for the
+new hub.
+
+The default `.github/dependabot.yml` therefore stays valid from the first revision, and it starts
+opening submodule update pull requests as soon as the repository tracks real submodule entries in
+`.gitmodules`.
+
 ## Template Variables
 
 The `justfile` exposes two customization variables. Change them after forking to match your setup.
