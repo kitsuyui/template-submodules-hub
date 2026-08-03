@@ -17,6 +17,12 @@ setup:
   just bootstrap-shared-commands
   just repo::submodule::init-all
 
+# Verify the first-run bootstrap path in a fresh fixture repository.
+test-bootstrap-smoke:
+  #!/bin/sh
+  set -eu
+  ./scripts/test-bootstrap-smoke.sh
+
 # Bootstrap the shared just module repository.
 bootstrap-shared-commands:
   #!/bin/sh

@@ -17,7 +17,7 @@ When reporting a bug, include:
 
 1. Fork the repository and create a topic branch from `main`.
 2. Make a focused change — one logical change per pull request.
-3. Verify that `just setup` still works end-to-end from a fresh clone.
+3. Run `just test-bootstrap-smoke` to verify the first-run bootstrap path and its idempotent rerun behavior in a fresh fixture repository.
 4. Open a pull request against `main` with a clear description of the change and why it is needed.
 
 ## Commit Messages
