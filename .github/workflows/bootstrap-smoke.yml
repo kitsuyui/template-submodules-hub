@@ -1,0 +1,33 @@
+name: Bootstrap Smoke
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/bootstrap-smoke.yml"
+      - ".just/**"
+      - "justfile"
+      - "scripts/test-bootstrap-smoke.sh"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/bootstrap-smoke.yml"
+      - ".just/**"
+      - "justfile"
+      - "scripts/test-bootstrap-smoke.sh"
+
+jobs:
+  bootstrap-smoke:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install just
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y just
+
+      - name: Run bootstrap smoke test
+        run: just test-bootstrap-smoke
