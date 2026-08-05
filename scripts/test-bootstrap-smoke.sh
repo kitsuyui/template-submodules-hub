@@ -32,8 +32,8 @@ git config user.email "bootstrap-smoke@example.com"
 git add .
 git commit -q -m "chore: seed bootstrap smoke fixture"
 
-just status | grep -F "phase: pre-bootstrap" >/dev/null
-just setup
+just --unstable status | grep -F "phase: pre-bootstrap" >/dev/null
+just --unstable setup
 
 first_head=$(git rev-parse HEAD)
 registered_path=$(git config -f .gitmodules --get "submodule.${target}.path")
@@ -45,7 +45,7 @@ ignore_mode=$(git config --local --get "submodule.${target}.ignore")
 just status | grep -F "phase: post-bootstrap" >/dev/null
 [ -z "$(git status --short)" ]
 
-just setup
+just --unstable setup
 second_head=$(git rev-parse HEAD)
 
 [ "$first_head" = "$second_head" ]

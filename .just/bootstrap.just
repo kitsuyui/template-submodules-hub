@@ -16,8 +16,8 @@ setup:
   #!/bin/sh
   set -eu
   cd "$(git rev-parse --show-toplevel)"
-  just bootstrap-shared-commands
-  just repo::submodule::init-all
+  just --unstable bootstrap-shared-commands
+  just --unstable repo::submodule::init-all
 
 # Verify the first-run bootstrap path in a fresh fixture repository.
 test-bootstrap-smoke:
