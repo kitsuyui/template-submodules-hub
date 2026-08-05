@@ -1,0 +1,34 @@
+name: Bootstrap Smoke
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/bootstrap-smoke.yml"
+      - ".just/**"
+      - "justfile"
+      - "scripts/test-bootstrap-smoke.sh"
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/bootstrap-smoke.yml"
+      - ".just/**"
+      - "justfile"
+      - "scripts/test-bootstrap-smoke.sh"
+
+jobs:
+  bootstrap-smoke:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install pinned tools
+        uses: jdx/mise-action@v3
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@c771a70e6277c0a99b617c7a806ffedaca235ff9
+
+      - name: Run bootstrap smoke test
+        run: just test-bootstrap-smoke

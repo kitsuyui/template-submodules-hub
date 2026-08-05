@@ -22,14 +22,22 @@ Bootstrap and shared submodule setup default managed submodules to `ignore=all` 
 
 ## Requirements
 
-This template expects [`just`](https://github.com/casey/just) **>= 1.12.0** and `git` to be installed before setup.
-The `import?` syntax used in `justfile` (optional import) requires just 1.12.0 or later.
-The bootstrap recipe also uses a GNU-style timeout command and accepts either `timeout` or `gtimeout` in `PATH`.
-
-On macOS:
+This template pins [`just`](https://github.com/casey/just) **1.58.0** in
+[`.mise.toml`](.mise.toml). Install [mise](https://mise.jdx.dev/) and run:
 
 ```sh
-brew install just coreutils
+mise install
+mise exec -- just setup
+```
+
+The fixed version includes stable support for the module syntax used by the shared
+command module. `git` must also be installed before setup.
+The bootstrap recipe also uses a GNU-style timeout command and accepts either `timeout` or `gtimeout` in `PATH`.
+
+On macOS, install mise and GNU coreutils:
+
+```sh
+brew install mise coreutils
 ```
 
 Homebrew installs the GNU timeout binary as `gtimeout`, which this template accepts during bootstrap.

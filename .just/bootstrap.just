@@ -1,7 +1,8 @@
 # Show bootstrap phase and available recipes.
 status:
   #!/bin/sh
-  if [ -f "repo/github.com/kitsuyui/just-submodules-hub/just/index.just" ]; then
+  repo_root="$(git rev-parse --show-toplevel)"
+  if [ -f "$repo_root/repo/github.com/kitsuyui/just-submodules-hub/just/index.just" ]; then
     echo "phase: post-bootstrap"
     echo "just-submodules-hub is available. All hub recipes are active."
   else
@@ -14,6 +15,7 @@ status:
 setup:
   #!/bin/sh
   set -eu
+  cd "$(git rev-parse --show-toplevel)"
   just bootstrap-shared-commands
   just repo::submodule::init-all
 
@@ -21,12 +23,14 @@ setup:
 test-bootstrap-smoke:
   #!/bin/sh
   set -eu
-  ./scripts/test-bootstrap-smoke.sh
+  repo_root="$(git rev-parse --show-toplevel)"
+  "$repo_root/scripts/test-bootstrap-smoke.sh"
 
 # Bootstrap the shared just module repository.
 bootstrap-shared-commands:
   #!/bin/sh
   set -eu
+  cd "$(git rev-parse --show-toplevel)"
   target="repo/github.com/kitsuyui/just-submodules-hub"
   url="https://github.com/kitsuyui/just-submodules-hub.git"
   if command -v timeout >/dev/null 2>&1; then
