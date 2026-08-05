@@ -21,7 +21,8 @@ setup:
 test-bootstrap-smoke:
   #!/bin/sh
   set -eu
-  ./scripts/test-bootstrap-smoke.sh
+  repo_root="{{justfile_directory()}}"
+  "$repo_root/scripts/test-bootstrap-smoke.sh"
 
 # Bootstrap the shared just module repository.
 bootstrap-shared-commands:
