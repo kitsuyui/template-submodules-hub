@@ -27,5 +27,8 @@ jobs:
       - name: Install just
         uses: extractions/setup-just@v4
 
+      - name: Install uv
+        uses: astral-sh/setup-uv@v9
+
       - name: Run bootstrap smoke test
         run: just test-bootstrap-smoke
