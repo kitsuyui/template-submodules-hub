@@ -1,6 +1,2 @@
 # This manifest starts empty on purpose.
 # `just setup` records the shared command submodule on first bootstrap.
-[submodule "repo/github.com/kitsuyui/just-submodules-hub"]
-	path = repo/github.com/kitsuyui/just-submodules-hub
-	url = https://github.com/kitsuyui/just-submodules-hub.git
-	shallow = true
